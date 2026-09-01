@@ -1,0 +1,949 @@
+{
+  "name": "My workflow 38",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1r_bwfYb6ET87MqmYsaJerXEsDtvNrjhxIU-CvZNx3Xs",
+          "mode": "list",
+          "cachedResultName": "Emp-Service",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r_bwfYb6ET87MqmYsaJerXEsDtvNrjhxIU-CvZNx3Xs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 197435765,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r_bwfYb6ET87MqmYsaJerXEsDtvNrjhxIU-CvZNx3Xs/edit#gid=197435765"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "880d332e-fe39-4eae-8b14-eb39a796415c",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "g0ZXKg4alYc0KApD",
+          "name": "Google Sheets Trigger account 7"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f3d3f076-f1de-4045-a674-0ee26083d655",
+              "name": "Timestamp",
+              "value": "={{ $json.Timestamp }}",
+              "type": "string"
+            },
+            {
+              "id": "08dcb529-e047-4a61-a40d-2c30da298d63",
+              "name": "Name",
+              "value": "={{ $json.Name }}",
+              "type": "string"
+            },
+            {
+              "id": "f1b0c000-bfbe-4447-adc2-931e820dc475",
+              "name": "Email",
+              "value": "={{ $json.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "1e4132ca-6f27-4a7d-86fc-51a580007fcb",
+              "name": "Department",
+              "value": "={{ $json.Department }}",
+              "type": "string"
+            },
+            {
+              "id": "b9ee0833-27aa-4dfb-bfc5-d531d0fb7a46",
+              "name": "Request type",
+              "value": "={{ $json['Request type'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fc228cae-bf91-4cf6-9efa-387f82736e65",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Request type'] }}",
+                    "rightValue": "Equipment",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "eb2374fd-4a23-48e3-ac32-314be66d962b"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Equipment"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "1d49dae5-e2a1-400d-a471-a3952ab9dc1c",
+                    "leftValue": "={{ $json['Request type'] }}",
+                    "rightValue": "Expense",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Expense"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "8c6150fa-cc2c-4cc7-9a58-412a3f92bc39",
+                    "leftValue": "={{ $json['Request type'] }}",
+                    "rightValue": "Leave",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Leave"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "5c4434e2-d9d4-47f6-bbfa-66ce0d6918d5",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2758a19a-00e3-4307-a42a-08b6ee845b50",
+              "name": "Equipment Name",
+              "value": "={{ $('Google Sheets Trigger').item.json['Equipment Name'] }}",
+              "type": "string"
+            },
+            {
+              "id": "bc0f7b72-5865-4577-8b66-cbc9fe99eb73",
+              "name": "EQ-Quantity",
+              "value": "={{ $('Google Sheets Trigger').item.json['EQ-Quantity'] }}",
+              "type": "number"
+            },
+            {
+              "id": "07f969fe-487f-49d1-b5cf-baaf9e359d30",
+              "name": "Request reason",
+              "value": "={{ $('Google Sheets Trigger').item.json['Request reason'] }}",
+              "type": "string"
+            },
+            {
+              "id": "0b627fb0-8e9c-4cfb-ba44-4f295fc39153",
+              "name": "Request Status",
+              "value": "New",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        -272
+      ],
+      "id": "af085ca7-56f7-41c9-9c25-1a8453f0b77a",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "476e0df1-0bac-4afd-9b19-fe16a04090d9",
+              "name": "Expense type",
+              "value": "={{ $('Google Sheets Trigger').item.json['Expense type'] }}",
+              "type": "string"
+            },
+            {
+              "id": "c6e2ca74-fc21-4d1a-b00d-ea83b098113a",
+              "name": "EX-Quantity",
+              "value": "={{ $('Google Sheets Trigger').item.json['EX-Quantity'] }}",
+              "type": "number"
+            },
+            {
+              "id": "2c81b7a7-83ef-4ab7-8007-188e2abc6cfa",
+              "name": "Describe",
+              "value": "={{ $('Google Sheets Trigger').item.json.Describe }}",
+              "type": "string"
+            },
+            {
+              "id": "f85c3a93-79e8-4eda-ae26-d3ae0a2d3329",
+              "name": "Request Status",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        -96
+      ],
+      "id": "0e1f41e2-9940-4b58-900e-db87833d728f",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1225764-6542-4bc0-87e3-8be33fd3c855",
+              "name": "Start date",
+              "value": "={{ $('Google Sheets Trigger').item.json['Start date'] }}",
+              "type": "string"
+            },
+            {
+              "id": "267910a8-f88c-4d8f-8597-f74800145d76",
+              "name": "days number",
+              "value": "={{ $('Google Sheets Trigger').item.json['days number'] }}",
+              "type": "number"
+            },
+            {
+              "id": "c61df67c-ce42-4929-bb15-b410d3df33fe",
+              "name": "Reason",
+              "value": "={{ $('Google Sheets Trigger').item.json.Reason }}",
+              "type": "string"
+            },
+            {
+              "id": "6d59b018-eb17-4247-8f5b-da0695f44933",
+              "name": "Request Status",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        96
+      ],
+      "id": "ca49b642-4390-4da3-bf20-e03e704922fa",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1r_bwfYb6ET87MqmYsaJerXEsDtvNrjhxIU-CvZNx3Xs/edit?resourcekey=&pli=1&gid=197435765#gid=197435765",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1r_bwfYb6ET87MqmYsaJerXEsDtvNrjhxIU-CvZNx3Xs/edit?resourcekey=&pli=1&gid=225208404#gid=225208404",
+          "mode": "url"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Equipment Name",
+              "displayName": "Equipment Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "EQ-Quantity",
+              "displayName": "EQ-Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Request reason",
+              "displayName": "Request reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "locationDefine": {
+            "values": {
+              "headerRow": 2
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        992,
+        -272
+      ],
+      "id": "a36f00b3-8828-419f-93a8-9f2611358bfb",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5ERPtN4TzreMHmlo",
+          "name": "Google Sheets account 19"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1r_bwfYb6ET87MqmYsaJerXEsDtvNrjhxIU-CvZNx3Xs",
+          "mode": "list",
+          "cachedResultName": "Emp-Service",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r_bwfYb6ET87MqmYsaJerXEsDtvNrjhxIU-CvZNx3Xs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1590065139,
+          "mode": "list",
+          "cachedResultName": "Expense",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r_bwfYb6ET87MqmYsaJerXEsDtvNrjhxIU-CvZNx3Xs/edit#gid=1590065139"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Expense type",
+              "displayName": "Expense type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EX-Quantity",
+              "displayName": "EX-Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Describtion",
+              "displayName": "Describtion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Describe",
+              "displayName": "Describe",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1792,
+        -192
+      ],
+      "id": "e6f591ee-972c-48a6-b984-7f972300429c",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5ERPtN4TzreMHmlo",
+          "name": "Google Sheets account 19"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1r_bwfYb6ET87MqmYsaJerXEsDtvNrjhxIU-CvZNx3Xs",
+          "mode": "list",
+          "cachedResultName": "Emp-Service",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r_bwfYb6ET87MqmYsaJerXEsDtvNrjhxIU-CvZNx3Xs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 490652046,
+          "mode": "list",
+          "cachedResultName": "Leave",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r_bwfYb6ET87MqmYsaJerXEsDtvNrjhxIU-CvZNx3Xs/edit#gid=490652046"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Start date",
+              "displayName": "Start date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "days number",
+              "displayName": "days number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reason",
+              "displayName": "Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1648,
+        96
+      ],
+      "id": "1fccd253-2943-4f6d-81ae-425621d8203a",
+      "name": "Append row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5ERPtN4TzreMHmlo",
+          "name": "Google Sheets account 19"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "48677312-740d-4dbe-b8ab-5c08f3ea63cc",
+              "leftValue": "={{ $('Google Sheets Trigger').item.json['EX-Quantity'] }}",
+              "rightValue": 1000,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1120,
+        -96
+      ],
+      "id": "13b0f479-9e15-4dd3-b1fe-ba445af389e0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "90df970e-01d5-4670-8383-3522f5f6f608",
+              "leftValue": "={{ $('Google Sheets Trigger').item.json['days number'] }}",
+              "rightValue": 5,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1024,
+        160
+      ],
+      "id": "69b42750-87d5-4fbc-a5c9-97c1674cba7b",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bd6ae36b-3907-4315-a723-7844da94301c",
+              "name": "Request Status",
+              "value": "Needs Approval",
+              "type": "string"
+            },
+            {
+              "id": "b859dbe8-3801-4cb1-b0aa-261308b9e712",
+              "name": "Expense type",
+              "value": "={{ $json['Expense type'] }}",
+              "type": "string"
+            },
+            {
+              "id": "f3a2c350-fc9f-489d-bca4-c906c43f33bb",
+              "name": "EX-Quantity",
+              "value": "={{ $json['EX-Quantity'] }}",
+              "type": "number"
+            },
+            {
+              "id": "9bcd03af-b0c6-41e8-889c-6230428f8496",
+              "name": "Describe",
+              "value": "={{ $json.Describe }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1504,
+        -224
+      ],
+      "id": "184a9f5f-8567-4488-90bd-570467f11be6",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6f88434b-ccac-49ac-892b-1067e6ae1feb",
+              "name": "Start date",
+              "value": "={{ $('Edit Fields3').item.json['Start date'] }}",
+              "type": "string"
+            },
+            {
+              "id": "d83a4943-8ddb-4279-81ee-653416b2ff0f",
+              "name": "days number",
+              "value": "={{ $('Edit Fields3').item.json['days number'] }}",
+              "type": "number"
+            },
+            {
+              "id": "27cb2995-25bf-4307-a9ac-9a1c75123bae",
+              "name": "Reason",
+              "value": "={{ $('Edit Fields3').item.json.Reason }}",
+              "type": "string"
+            },
+            {
+              "id": "5d0b41a1-57b6-4547-9389-bf57af8b7773",
+              "name": "Request Status",
+              "value": "Needs Manager Review",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1376,
+        80
+      ],
+      "id": "97e43f45-4040-4ace-a1a5-80a637efabf9",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b6a4eebd-2f83-47ca-ae39-6d8c821ff743",
+              "name": "Start date",
+              "value": "={{ $('Edit Fields3').item.json['Start date'] }}",
+              "type": "string"
+            },
+            {
+              "id": "afd3011e-323d-478e-b9a0-72c1cd5e2c8a",
+              "name": "days number",
+              "value": "={{ $('Edit Fields3').item.json['days number'] }}",
+              "type": "number"
+            },
+            {
+              "id": "68bf0089-613b-4861-8163-78f27b902f27",
+              "name": "Reason",
+              "value": "={{ $('Edit Fields3').item.json.Reason }}",
+              "type": "string"
+            },
+            {
+              "id": "1ada7bfc-4687-4440-8fa5-5c25b22cb738",
+              "name": "Request Status",
+              "value": "Pending",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1376,
+        224
+      ],
+      "id": "c123ea97-2a5c-4a83-9752-c12a0c27e0f3",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4265bde8-8da1-4118-88c7-332cac92dcad",
+              "name": "Request Status",
+              "value": "Pending",
+              "type": "string"
+            },
+            {
+              "id": "39713160-22ee-4013-8464-22850d1573cb",
+              "name": "EX-Quantity",
+              "value": "={{ $json['EX-Quantity'] }}",
+              "type": "number"
+            },
+            {
+              "id": "919e45c4-65a3-4ab7-a81c-71a12fb52367",
+              "name": "Describe",
+              "value": "={{ $json.Describe }}",
+              "type": "string"
+            },
+            {
+              "id": "14efab2a-2aa1-49ff-bc6a-62accfef83c5",
+              "name": "Expense type",
+              "value": "={{ $json['Expense type'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1488,
+        -80
+      ],
+      "id": "63f68cf2-604d-4d10-9903-48378a4b8371",
+      "name": "Edit Fields7"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet2": {
+      "main": [
+        []
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields7": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "bfcbe1f6-ba2b-465e-9b51-19153b190a13",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0ef319171642ff61a805002a8d3c9810efc150688b66d838b10c1eccf1fabe2e"
+  },
+  "nodeGroups": [],
+  "id": "PYK7cswmCVkCEDcE",
+  "tags": []
+}
